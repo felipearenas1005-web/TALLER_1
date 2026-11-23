@@ -1,0 +1,1376 @@
+---
+title: "TALLER 2"
+subtitle: "TEORIA-ACTIVIDES EN CLASE"
+author: 
+  - name: Luis Felipe Arenas Ramirez<br>Yari Karoline Lozano Rodriguez<br>Angela Liliana Tique Quiroga<br>Paola Alejandra Montoya Aponte
+    affiliation: "Escuela Superior de Administracion Publica"
+    affiliation-url: "https://www.esap.edu.co/"
+date: today
+lang: es
+title-block-banner: "#9abaf5"
+
+
+format:
+  html:
+    page-layout: full
+    fontsize: 12pt
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    number-sections: true
+    code-fold: true
+    code-summary: "Ver código"
+    theme: dark
+    highlight-style: monokai
+    html-math-method: katex
+    smooth-scroll: true
+    link-external-newwindow: true
+    code-overflow: scroll
+    favicon: favicon.ico
+    css: estilos.css
+    
+editor: visual
+
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+    fig.align: center
+    fig.width: 6
+    fig.height: 6
+    out.width: "80%"
+---
+
+{=html}
+
+::: {style="position: absolute; top: 40px; right: 20px;"}
+<img src="Logo_Esap.png" width="190"/>
+:::
+
+{=html} <style> body{ background-color:#f7f6ed; font-size:130%; text-align:justify; } </style> ---
+
+# PAQUETES
+
+```{r}
+#| warning: false
+#| message: false
+
+# Verificar, instalar y activar el paquete "tidyverse"
+if (!require(tidyverse)) {
+  install.packages("tidyverse")
+}
+library(tidyverse)
+
+# Verificar, instalar y activar el paquete "kableExtra"
+if (!require(kableExtra)) {
+  install.packages("kableExtra")
+}
+library(kableExtra)
+
+# Verificar, instalar y activar el paquete "readxl"
+if (!require(readxl)) {
+  install.packages("readxl")
+}
+library(readxl)
+library(gridExtra)
+```
+
+# DISTRIBUCIÓN NORMAL
+
+La distribución normal, también conocida como distribución gaussiana o campana de Gauss, es la distribución de probabilidad continua más importante en la estadística.
+
+Su importancia radica en que muchos fenómenos naturales, sociales y económicos siguen este patrón.
+
+La distribución normal es la distribución de probabilidad continua más usada en estadística y una herramienta fundamental para modelar una inmensa variedad de fenómenos en las ciencias, la ingeniería y la economía. Su popularidad se debe a una propiedad matemática conocida como el Teorema del Límite Central, que establece que la suma o el promedio de un gran número de variables aleatorias independientes (sin importar su distribución original) tiende a seguir una distribución normal.
+
+**Características Clave**
+
+La distribución normal es un tipo de distribución de probabilidad continua. Esto significa que la variable aleatoria puede tomar cualquier valor dentro de un rango determinado. Se representa por una curva simétrica en forma de campana, donde la mayor parte de los datos se agrupan alrededor del valor central.
+
+- **Forma de Campana:** La distribución es simétrica alrededor de su media, creando una curva con forma de campana. El punto más alto de la campana es la media.
+- **Media, Mediana y Moda Coincidentes:** En una distribución normal perfecta, estos tres valores son iguales y se encuentran en el centro de la curva.
+- **Asintótica al Eje Horizontal:** La curva se extiende indefinidamente en ambas direcciones, acercándose al eje x pero sin llegar a tocarlo.
+- **Regla Empírica:** Alrededor del 68% de los datos se encuentran dentro de una desviación estándar de la media **(**$\mu \pm \sigma$), el 95% dentro de dos desviaciones estándar **(**$\mu \pm 2\sigma$), y el 99.7% dentro de tres desviaciones estándar **(**$\mu \pm 3\sigma$).
+
+**Parámetros**
+
+La distribución normal está completamente definida por dos parámetros:
+
+- **Media *(***$\mu$): Indica la ubicación del centro de la curva y el valor más probable.
+- **Varianza** $\sigma^2$ o Desviación Estándar ($\sigma$): Mide la dispersión o variabilidad de los datos. Una $\sigma$ grande resulta en una curva más ancha y aplanada, mientras que una $\sigma$ pequeña crea una curva más estrecha y alta.
+
+**Fórmulas**
+
+La fórmula principal de la distribución normal es la función de densidad de probabilidad (FDP). Esta función no calcula la probabilidad de un punto exacto, sino la densidad de probabilidad en ese punto.
+
+Función de Densidad de Probabilidad (FDP):
+
+$$f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{1}{2} \left( \frac{x-\mu}{\sigma} \right)^2}$$
+
+Donde:
+
+- $x$ es el valor de la variable aleatoria.
+- $\mu$ es la media.
+- $\sigma$ es la desviación estándar.
+- $e$ es el número de Euler (aproximadamente 2.71828).
+- $\pi$ es la constante pi (aproximadamente 3.14159).
+
+Para calcular probabilidades, se utiliza la distribución normal estándar, que tiene una media de 0 y una desviación estándar de 1. Cualquier variable normal puede estandarizarse usando la siguiente fórmula:
+
+Fórmula de Estandarización (puntuación Z):
+
+$$Z = \frac{x - \mu}{\sigma}$$
+
+La puntuación Z nos dice cuántas desviaciones estándar está un valor dado de la media. Luego, se usan tablas o software estadístico para encontrar las probabilidades correspondientes.
+
+**EJERCICIOS**
+
+**Ejercicio 1.1**
+
+Un investigador científico informa que unos ratones vivirán un promedio de 40 meses cuando sus dietas se restringen drásticamente y después se enriquecen con vitaminas y proteínas. Suponiendo que las vidas de tales ratones se distribuyen normalmente con una desviación estándar de 6.3 meses, encuentre la probabilidad de que un ratón dado vivirá:
+
+1.  más de 32 meses
+2.  menos de 28 meses
+3.  entre 37 y 49 meses
+
+**Parámetros**
+
+```{r}
+media <- 40 
+desviacion_estandar <- 6.3
+```
+
+**Solución de los puntos**
+
+::: panel-tabset
+## Punto 1
+
+¿Cuál es la probabilidad de que un ratón dado viva más de 32 meses?
+
+```{r}
+prob_mas_de_32 <- 1 - pnorm(32, mean = media, sd = desviacion_estandar)
+cat("a)", round(prob_mas_de_32, 4), "\n")
+```
+
+**Gráfica**
+
+```{r}
+rango <- c(media - 3 * desviacion_estandar, media + 3 * desviacion_estandar)
+ggplot(data.frame(x = rango), aes(x = x)) +
+  stat_function(fun = dnorm, args = list(mean = media, sd = desviacion_estandar), 
+                n = 500, color = "black") +
+  geom_area(stat = "function", fun = dnorm, args = list(mean = media, sd = desviacion_estandar),
+            fill = "#FF5785", xlim = c(32, rango[2]), alpha = 0.5) +
+  labs(title = "Distribución Normal",
+       subtitle = "Probabilidad de vivir más de 32 meses",
+       x = "Vida en meses",
+       y = "Densidad de Probabilidad") +
+  theme_bw() +
+  geom_vline(xintercept = 32, linetype = "dashed", color = "#FF0000") +
+  geom_text(aes(x = 32, y = 0.01, label = "32 meses"), hjust = -0.1, vjust = -1)
+```
+
+## Punto 2
+
+¿Cuál es la probabilidad de que un ratón dado viva menos de 28 meses?
+
+```{r}
+prob_menos_de_28 <- pnorm(28, mean = media, sd = desviacion_estandar)
+cat("b)", round(prob_menos_de_28, 4), "\n")
+```
+
+**Gráfica**
+
+```{r}
+ggplot(data.frame(x = rango), aes(x = x)) +
+  stat_function(fun = dnorm, args = list(mean = media, sd = desviacion_estandar), 
+                n = 500, color = "black") +
+  geom_area(stat = "function", fun = dnorm, args = list(mean = media, sd = desviacion_estandar),
+            fill = "#57A0FF", xlim = c(rango[1], 28), alpha = 0.5) +
+  labs(title = "Distribución Normal",
+       subtitle = "Probabilidad de vivir menos de 28 meses",
+       x = "Vida en meses",
+       y = "Densidad de Probabilidad") +
+  theme_bw() +
+  geom_vline(xintercept = 28, linetype = "dashed", color = "#0000FF") +
+  geom_text(aes(x = 28, y = 0.01, label = "28 meses"), hjust = 1.1, vjust = -1)
+```
+
+## Punto 3
+
+¿Cuál es la probabilidad de que un ratón dado viva entre 37 y 49 meses?
+
+```{r}
+prob_entre_37_49 <- pnorm(49, mean = media, sd = desviacion_estandar) - 
+                    pnorm(37, mean = media, sd = desviacion_estandar)
+cat("c)", round(prob_entre_37_49, 4), "\n")
+```
+
+**Gráfica**
+
+```{r}
+ggplot(data.frame(x = rango), aes(x = x)) +
+  stat_function(fun = dnorm, args = list(mean = media, sd = desviacion_estandar), 
+                n = 500, color = "black") +
+  geom_area(stat = "function", fun = dnorm, args = list(mean = media, sd = desviacion_estandar),
+            fill = "#57FF85", xlim = c(37, 49), alpha = 0.5) +
+  labs(title = "Distribución Normal",
+       subtitle = "Probabilidad de vivir entre 37 y 49 meses",
+       x = "Vida en meses",
+       y = "Densidad de Probabilidad") +
+  theme_bw() +
+  geom_vline(xintercept = c(37, 49), linetype = "dashed", color = "#008000")
+```
+:::
+
+# DISTRIBUCIÓN CHI CUADRADO
+
+La distribución Chi-cuadrado ($\chi^2$) es una distribución de probabilidad continua que surge como la suma de los cuadrados de $k$ variables aleatorias independientes con distribución normal estándar.
+
+$$X = Z_1^2 + Z_2^2 + \dots + Z_k^2 \sim \chi^2_k$$
+
+**Principales características**
+
+- **Asimetría:** Es asimétrica positiva (sesgada a la derecha) y solo toma valores no negativos ($x \ge 0$). A medida que aumentan los grados de libertad ($k$), la curva se vuelve más simétrica y se aproxima a una normal.
+- **Parámetro:** Depende únicamente de los grados de libertad ($k$ o $\nu$).
+- **Media:** $E(X) = k$
+- **Varianza:** $Var(X) = 2k$
+
+```{r}
+x_chi <- seq(0, 25, length.out = 500)
+df_chi <- data.frame(
+  x = rep(x_chi, 3),
+  densidad = c(dchisq(x_chi, df = 3), dchisq(x_chi, df = 6), dchisq(x_chi, df = 10)),
+  gl = factor(rep(c("k = 3", "k = 6", "k = 10"), each = 500), levels = c("k = 3", "k = 6", "k = 10"))
+)
+
+ggplot(df_chi, aes(x = x, y = densidad, color = gl)) +
+  geom_line(linewidth = 1) +
+  labs(title = "Distribución Chi-Cuadrado",
+       subtitle = "Comparación según grados de libertad (k)",
+       x = "Valor de Chi-cuadrado",
+       y = "Densidad",
+       color = "Grados de libertad") +
+  theme_bw()
+```
+
+# DISTRIBUCIÓN T DE STUDENT
+
+Si $Z \sim N(0,1)$ y $V \sim \chi^2_v$ son variables aleatorias independientes, entonces la variable aleatoria:
+
+$$T = \frac{Z}{\sqrt{V/v}}$$
+
+sigue una distribución $t$ de Student con $v$ grados de libertad.
+
+**Principales características**
+
+- **Forma**: es simétrica respecto al cero, similar a la normal estándar, pero con colas más pesadas (mayor probabilidad en los extremos).
+- **Parámetro**: depende de los grados de libertad ($v$); a mayor $v$, la distribución se aproxima a la normal estándar $N(0,1)$.
+- **Media**: $0 \quad (\text{para } v > 1)$.
+- **Varianza**: $\frac{v}{v-2} \quad (\text{para } v > 2)$
+
+**Usos principales**
+
+Se utiliza principalmente para estimar la media de una población normalmente distribuida cuando el tamaño de la muestra es pequeño ($n < 30$) y se desconoce la desviación estándar poblacional ($\sigma$).
+
+## EJERCICIOS
+
+**Ejercicio 4.1:** Un ingeniero químico afirma que el rendimiento medio de la población de cierto proceso en lotes es 500 gramos por milímetro de materia prima. Para verificar esta afirmación toma una muestra de 25 lotes cada mes. Si el valor de $t$ calculado cae entre $-t_{0.05}$ y $t_{0.05}$, queda satisfecho con su afirmación. ¿Qué conclusión debería sacar de una muestra que tiene una media $\bar{x} = 518$ gramos y una desviación estándar $s = 40$ gramos?
+
+### Solución de puntos
+
+```{r}
+n <- 25
+gl <- n - 1
+mu_0 <- 500
+x_barra <- 518
+s <- 40
+
+t_critico <- qt(0.95, df = gl)
+t_calculado <- (x_barra - mu_0) / (s / sqrt(n))
+
+cat("Valor crítico t_0.05:", round(t_critico, 4), "\n")
+cat("Valor t calculado:", round(t_calculado, 4), "\n")
+```
+
+### Gráfica de comparación
+
+```{r}
+x_t <- seq(-4, 4, length.out = 500)
+ggplot(data.frame(x = x_t), aes(x = x)) +
+  stat_function(fun = dt, args = list(df = gl), color = "black", linewidth = 1) +
+  geom_area(stat = "function", fun = dt, args = list(df = gl),
+            fill = "#9C27B0", xlim = c(-t_critico, t_critico), alpha = 0.3) +
+  geom_vline(xintercept = c(-t_critico, t_critico), linetype = "dashed", color = "blue") +
+  geom_vline(xintercept = t_calculado, linetype = "solid", color = "red", linewidth = 1) +
+  labs(title = "Distribución t de Student (gl = 24)",
+       subtitle = "Región de aceptación vs t calculado (línea roja)",
+       x = "Valores de t", y = "Densidad") +
+  theme_bw()
+```
+
+# DISTRIBUCIÓN F DE FISHER
+
+Si $U \sim \chi^2_{v_1}$ y $V \sim \chi^2_{v_2}$ son variables aleatorias independientes, entonces el cociente:
+
+$$F = \frac{U / v_1}{V / v_2} \sim F_{v_1, v_2}$$
+
+sigue una distribución $F$ de Fisher-Snedecor con $v_1$ grados de libertad en el numerador y $v_2$ grados de libertad en el denominador.
+
+**Principales características**
+
+- **Asimetría:** Es asimétrica hacia la derecha y solo toma valores positivos ($F > 0$).
+- **Parámetros:** Depende de dos grados de libertad ($v_1$ y $v_2$).
+- **Usos principales:** Pruebas de hipótesis para comparar dos varianzas poblacionales y en el Análisis de Varianza (ANOVA).
+
+## EJERCICIOS
+
+**Ejercicio 5.1:** Encuentre el valor de $f_{0.05}$ para una distribución $F$ con $v_1 = 7$ y $v_2 = 15$ grados de libertad, y calcule la probabilidad $P(F > 2.5)$.
+
+### Solución de puntos
+
+```{r}
+v1 <- 7
+v2 <- 15
+f_critico <- qf(0.95, df1 = v1, df2 = v2)
+prob_mayor_2.5 <- 1 - pf(2.5, df1 = v1, df2 = v2)
+
+cat("Valor crítico F_0.05:", round(f_critico, 4), "\n")
+cat("P(F > 2.5):", round(prob_mayor_2.5, 4), "\n")
+```
+
+# TEOREMAS IMPORTANTES
+
+## Teorema 1
+
+Si $X_1, X_2, \dots, X_n$ son variables aleatorias independientes con medias $\mu_1, \mu_2, \dots, \mu_n$ y varianzas $\sigma_1^2, \sigma_2^2, \dots, \sigma_n^2$, entonces la combinación lineal $Y = \sum_{i=1}^n a_i X_i$ tiene media $\mu_Y = \sum_{i=1}^n a_i \mu_i$ y varianza $\sigma_Y^2 = \sum_{i=1}^n a_i^2 \sigma_i^2$.
+
+## Teorema 2
+
+Si $X_1, X_2, \dots, X_n$ son variables aleatorias independientes con distribuciones normales $N(\mu_i, \sigma_i^2)$, entonces la combinación lineal $Y = \sum_{i=1}^n a_i X_i$ sigue exactamente una distribución normal $N\left(\sum_{i=1}^n a_i \mu_i, \sum_{i=1}^n a_i^2 \sigma_i^2\right)$.
+
+## Teorema 3
+
+Si $X_1, X_2, \dots, X_n$ constituye una muestra aleatoria de tamaño $n$ de una población normal con media $\mu$ y varianza $\sigma^2$, entonces la media muestral $\bar{X}$ se distribuye normalmente con media $\mu_{\bar{X}} = \mu$ y varianza $\sigma_{\bar{X}}^2 = \frac{\sigma^2}{n}$.
+
+## Teorema 4
+
+Si $Z \sim N(0,1)$, entonces $Z^2 \sim \chi^2_1$. Además, si $Z_1, Z_2, \dots, Z_n$ son normales estándar independientes, entonces $\sum_{i=1}^n Z_i^2 \sim \chi^2_n$.
+
+## Teorema 5
+
+Si $X_1, X_2, \dots, X_n$ son variables aleatorias independientes con distribución $\chi^2_{v_i}$, entonces su suma $Y = \sum_{i=1}^n X_i$ sigue una distribución $\chi^2$ con $v = \sum_{i=1}^n v_i$ grados de libertad.
+
+## Teorema 6
+
+Si $S^2$ es la varianza de una muestra aleatoria de tamaño $n$ tomada de una población normal con varianza $\sigma^2$, entonces el estadístico $\frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}$, y es independiente de la media muestral $\bar{X}$.
+
+## Teorema 7
+
+Si $Z \sim N(0,1)$ y $V \sim \chi^2_v$ son independientes, entonces $T = \frac{Z}{\sqrt{V/v}} \sim t_v$.
+
+# TEOREMA DEL LIMITE CENTRAL
+
+El **Teorema del Límite Central (TLC)** establece que si $\bar{X}$ es la media de una muestra aleatoria de tamaño $n$ tomada de una población con media $\mu$ y varianza finita $\sigma^2$, entonces la forma límite de la distribución de:
+
+$$Z = \frac{\bar{X} - \mu}{\sigma / \sqrt{n}}$$
+
+a medida que $n \to \infty$, es la distribución normal estándar $N(0, 1)$. En la práctica, la aproximación normal es adecuada cuando $n \ge 30$.
+
+## Simulación del teorema del limite central
+
+::: panel-tabset
+### TCL PARA LA DISTRIBUCIÓN UNIFORME
+
+```{r}
+set.seed(123)
+n <- 30
+simulaciones <- 1000
+medias_unif <- replicate(simulaciones, mean(runif(n, min = 0, max = 10)))
+
+ggplot(data.frame(medias = medias_unif), aes(x = medias)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "#9C27B0", alpha = 0.6, color = "white") +
+  stat_function(fun = dnorm, args = list(mean = 5, sd = sqrt((10^2/12)/n)), color = "red", linewidth = 1) +
+  labs(title = "TCL - Distribución Uniforme U(0, 10)", x = "Media muestral", y = "Densidad") +
+  theme_bw()
+```
+
+### TCL PARA LA DISTRIBUCIÓN BINOMIAL
+
+```{r}
+set.seed(123)
+medias_binom <- replicate(simulaciones, mean(rbinom(n, size = 20, prob = 0.3)))
+
+ggplot(data.frame(medias = medias_binom), aes(x = medias)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 25, fill = "#2196F3", alpha = 0.6, color = "white") +
+  stat_function(fun = dnorm, args = list(mean = 6, sd = sqrt((20*0.3*0.7)/n)), color = "red", linewidth = 1) +
+  labs(title = "TCL - Distribución Binomial B(20, 0.3)", x = "Media muestral", y = "Densidad") +
+  theme_bw()
+```
+
+### TCL PARA LA DISTRIBUCIÓN POISSON
+
+```{r}
+set.seed(123)
+medias_pois <- replicate(simulaciones, mean(rpois(n, lambda = 4)))
+
+ggplot(data.frame(medias = medias_pois), aes(x = medias)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 25, fill = "#4CAF50", alpha = 0.6, color = "white") +
+  stat_function(fun = dnorm, args = list(mean = 4, sd = sqrt(4/n)), color = "red", linewidth = 1) +
+  labs(title = "TCL - Distribución Poisson (lambda = 4)", x = "Media muestral", y = "Densidad") +
+  theme_bw()
+```
+
+### TCL PARA LA DISTRIBUCIÓN HIPERGEOMETRICA
+
+```{r}
+set.seed(123)
+# m = éxitos en población (40), n_frac = fracasos (60), k = extracciones (15)
+medias_hyper <- replicate(simulaciones, mean(rhyper(n, m = 40, n = 60, k = 15)))
+mu_h <- 15 * (40 / 100)
+var_h <- 15 * (40/100) * (60/100) * ((100 - 15) / (100 - 1))
+
+ggplot(data.frame(medias = medias_hyper), aes(x = medias)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 25, fill = "#FF9800", alpha = 0.6, color = "white") +
+  stat_function(fun = dnorm, args = list(mean = mu_h, sd = sqrt(var_h/n)), color = "red", linewidth = 1) +
+  labs(title = "TCL - Distribución Hipergeométrica", x = "Media muestral", y = "Densidad") +
+  theme_bw()
+```
+
+### TCL PARA LA DISTRIBUCIÓN EXPONENCIAL
+
+```{r}
+set.seed(123)
+rate_exp <- 0.5
+medias_exp <- replicate(simulaciones, mean(rexp(n, rate = rate_exp)))
+
+ggplot(data.frame(medias = medias_exp), aes(x = medias)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "#E91E63", alpha = 0.6, color = "white") +
+  stat_function(fun = dnorm, args = list(mean = 1/rate_exp, sd = sqrt((1/rate_exp^2)/n)), color = "red", linewidth = 1) +
+  labs(title = "TCL - Distribución Exponencial (rate = 0.5)", x = "Media muestral", y = "Densidad") +
+  theme_bw()
+```
+:::
+
+# TEOREMA DEL LIMITE CENTRAL CON SHINY APP
+
+Para ejecutar una aplicación interactiva en RStudio donde puedas modificar dinámicamente el tamaño de muestra ($n$), el número de simulaciones y la distribución de origen, ejecuta el siguiente bloque en tu consola o script de R:
+
+```{r}
+#| eval: false
+
+library(shiny)
+
+ui <- fluidPage(
+  titlePanel("Simulador Interactivo del Teorema del Límite Central"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("dist", "Distribución Poblacional:",
+                  choices = c("Uniforme" = "unif",
+                              "Exponencial" = "exp",
+                              "Poisson" = "pois",
+                              "Binomial" = "binom")),
+      sliderInput("n", "Tamaño de la muestra (n):", min = 2, max = 100, value = 30),
+      sliderInput("sims", "Número de simulaciones:", min = 100, max = 5000, value = 1000, step = 100)
+    ),
+    mainPanel(
+      plotOutput("histPlot")
+    )
+  )
+)
+
+server <- function(input, output) {
+  output$histPlot <- renderPlot({
+    set.seed(123)
+    medias <- switch(input$dist,
+      "unif" = replicate(input$sims, mean(runif(input$n, 0, 10))),
+      "exp"  = replicate(input$sims, mean(rexp(input$n, 0.5))),
+      "pois" = replicate(input$sims, mean(rpois(input$n, 4))),
+      "binom" = replicate(input$sims, mean(rbinom(input$n, 20, 0.3)))
+    )
+    
+    ggplot(data.frame(x = medias), aes(x = x)) +
+      geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "#9C27B0", alpha = 0.7, color = "white") +
+      stat_function(fun = dnorm, args = list(mean = mean(medias), sd = sd(medias)), color = "red", linewidth = 1.2) +
+      labs(title = paste("Distribución de Medias Muestrales (n =", input$n, ")"),
+           x = "Media Muestral", y = "Densidad") +
+      theme_minimal(base_size = 14)
+  })
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+# DISTRIBUCIÓN NORMAL ESTANDAR - ACTIVIDAD 1
+
+```{r}
+#| warning: false
+#| message: false
+
+if (!require(tidyverse)) install.packages("tidyverse")
+library(tidyverse)
+
+graficar_normal <- function(x_min, x_max, titulo, subtitulo, marcas_x, color_area = "#9C27B0") {
+  x_grid <- seq(-3.8, 3.8, length.out = 600)
+  p <- ggplot(data.frame(x = x_grid), aes(x = x)) +
+    stat_function(fun = dnorm, color = "#1A237E", linewidth = 1.1) +
+    geom_vline(xintercept = 0, linetype = "dotted", color = "gray50") +
+    scale_x_continuous(breaks = sort(unique(c(-3, -2, -1, 0, 1, 2, 3, marcas_x)))) +
+    labs(title = titulo, subtitle = subtitulo, x = "Valores Z", y = "Densidad") +
+    theme_minimal() +
+    theme(panel.grid.minor = element_blank(),
+          axis.line.x = element_line(color = "black"))
+  
+  if (!is.na(x_min) && !is.na(x_max) && x_min < x_max) {
+    p <- p + geom_area(stat = "function", fun = dnorm, xlim = c(x_min, x_max),
+                       fill = color_area, alpha = 0.45)
+  }
+  if (length(marcas_x) > 0) {
+    p <- p + geom_vline(xintercept = marcas_x, linetype = "dashed", color = "#D32F2F", linewidth = 0.8)
+  }
+  return(p)
+}
+```
+
+**PARTE 1: GRAFICAR Y CALCULAR EL ÁREA**
+
+1.1 $P(Z \le -1,54)$
+
+- **Solución:** $P(Z \le -1,54) = 1 - F(1,54) = 1 - 0,9382 = 0,0618$ (fila $1,5$, columna $0,04$).
+- **Gráfica:** marca $-1,54$ a la izquierda del $0$ y sombrea toda la cola izquierda, de $-\infty$ hasta $-1,54$.
+- **GeoGebra:** Valor: `Normal(0, 1, -1.54, true)` \| Área: `Integral(f, -5, -1.54)`.
+
+```{r}
+#| fig-width: 7
+#| fig-height: 3
+
+pnorm(-1.54)
+graficar_normal(-3.8, -1.54, "1.1 P(Z ≤ -1.54) = 0.0618",
+                "Cola izquierda desde -∞ hasta -1.54", c(-1.54))
+```
+
+**1.2** $P(Z > 0,72)$
+
+- **Solución:** $P(Z > 0,72) = 1 - F(0,72) = 1 - 0,7642 = 0,2358$ (fila $0,7$, columna $0,02$).
+- **Gráfica:** marca $0,72$ a la derecha del $0$ y sombrea la cola derecha, de $0,72$ hasta $+\infty$.
+- **GeoGebra:** Valor: `1 - Normal(0, 1, 0.72, true)` \| Área: `Integral(f, 0.72, 5)`.
+
+```{r}
+#| fig-width: 7
+#| fig-height: 3
+
+1 - pnorm(0.72)
+graficar_normal(0.72, 3.8, "1.2 P(Z > 0.72) = 0.2358",
+                "Cola derecha desde 0.72 hasta +∞", c(0.72), color_area = "#2196F3")
+```
+
+**1.3** $P(-2,45 \le Z \le -1,27)$
+
+- **Solución:** $P = F(-1,27) - F(-2,45) = F(2,45) - F(1,27) = 0,9929 - 0,8980 = 0,0949$.
+- **Gráfica:** marca $-2,45$ y $-1,27$ en el lado izquierdo y sombrea solo la franja entre ellos.
+- **GeoGebra:** Valor: `Normal(0, 1, -1.27, true) - Normal(0, 1, -2.45, true)` \| Área: `Integral(f, -2.45, -1.27)`.
+
+```{r}
+#| fig-width: 7
+#| fig-height: 3
+
+pnorm(-1.27) - pnorm(-2.45)
+graficar_normal(-2.45, -1.27, "1.3 P(-2.45 ≤ Z ≤ -1.27) = 0.0949",
+                "Franja central izquierda entre -2.45 y -1.27", c(-2.45, -1.27), color_area = "#4CAF50")
+```
+
+**PARTE 2: HALLAR LAS PROBABILIDADES**
+
+**2.1 \$P(Z = 2)**
+
+- **Solución:** la variable es continua y un punto no tiene área, así que $P(Z = 2) = 0$.
+- **Gráfica:** marca el $2$ en el eje. No hay zona que sombrear (es solo una línea).
+- **GeoGebra:** `Integral(f, 2, 2)` da `0`.
+
+```{r}
+#| fig-width: 7
+#| fig-height: 3
+
+graficar_normal(NA, NA, "2.1 P(Z = 2) = 0",
+                "Punto exacto en Z = 2 (sin área sombreada)", c(2))
+```
+
+**2.2** $P(Z \le 0)$
+
+- **Solución:** $F(0) = 0,5000$ (fila $0,0$, columna $0,00$).
+- **Gráfica:** sombrea toda la mitad izquierda de la campana, hasta el $0$.
+- **GeoGebra:** `Normal(0, 1, 0, true)`.
+
+```{r}
+#| fig-width: 7
+#| fig-height: 3
+
+pnorm(0)
+graficar_normal(-3.8, 0, "2.2 P(Z ≤ 0) = 0.5000",
+                "Mitad izquierda completa hasta Z = 0", c(0), color_area = "#FF9800")
+```
+
+**2.3** $P(Z \le -2,75)$ y $P(Z < -2,75)$
+
+- **Solución:** $P(Z \le -2,75) = 1 - F(2,75) = 1 - 0,9970 = 0,0030$. Como $P(Z = -2,75) = 0$, $P(Z < -2,75) = 0,0030$.
+- **Gráfica:** marca $-2,75$ y sombrea la cola izquierda. Es el mismo dibujo para ambas probabilidades.
+- **GeoGebra:** `Normal(0, 1, -2.75, true)`.
+
+```{r}
+#| fig-width: 7
+#| fig-height: 3
+
+pnorm(-2.75)
+graficar_normal(-3.8, -2.75, "2.3 P(Z ≤ -2.75) = P(Z < -2.75) = 0.0030",
+                "Cola izquierda extrema hasta -2.75", c(-2.75), color_area = "#E91E63")
+```
+
+**2.4** $P(Z \le -1,57)$ y $P(Z > 1,57)$
+
+- **Solución:** $F(1,57) = 0,9418 \implies P(Z \le -1,57) = 0,0582$ y $P(Z > 1,57) = 0,0582$. Son iguales por la simetría de la campana.
+- **Gráfica:** se dibujan dos campanas (cola izquierda hasta $-1,57$ y cola derecha desde $1,57$).
+- **GeoGebra:** `Normal(0, 1, -1.57, true)` y `1 - Normal(0, 1, 1.57, true)`.
+
+```{r}
+#| fig-width: 7
+#| fig-height: 3
+
+cat("P(Z <= -1.57):", round(pnorm(-1.57), 4), "| P(Z > 1.57):", round(1 - pnorm(1.57), 4), "\n")
+graficar_normal(-3.8, -1.57, "2.4a Cola izquierda: P(Z ≤ -1.57) = 0.0582",
+                "Simétrica respecto a P(Z > 1.57)", c(-1.57), color_area = "#9C27B0")
+graficar_normal(1.57, 3.8, "2.4b Cola derecha: P(Z > 1.57) = 0.0582",
+                "Simétrica respecto a P(Z ≤ -1.57)", c(1.57), color_area = "#9C27B0")
+```
+
+**PARTE 3: HALLAR** $z_0$
+
+**3.1** $P(Z \le z_0) = 0,95$
+
+- **Solución:** en la tabla, $F(1,64) = 0,9495$ y $F(1,65) = 0,9505$, por lo que $z_0 = 1,645$.
+- **Gráfica:** sombrea desde $-\infty$ hasta $z_0$ a la derecha del $0$ (área $0,95$).
+- **GeoGebra:** `InversaNormal(0, 1, 0.95)` da `1.6449`.
+
+```{r}
+#| fig-width: 7
+#| fig-height: 3
+
+z31 <- qnorm(0.95)
+cat("z0 =", round(z31, 4), "\n")
+graficar_normal(-3.8, z31, "3.1 P(Z ≤ z₀) = 0.95 → z₀ = 1.645",
+                "Área acumulada izquierda del 95 %", c(round(z31, 3)), color_area = "#4CAF50")
+```
+
+**3.2** $P(Z > z_0) = 0,95$
+
+- **Solución:** $F(z_0) = 1 - 0,95 = 0,05$. Por simetría, $z_0 = -1,645$.
+- **Gráfica:** marca $z_0$ a la izquierda del $0$ y sombrea desde $z_0$ hasta $+\infty$ (área $0,95$).
+- **GeoGebra:** `InversaNormal(0, 1, 0.05)` da `-1.6449`.
+
+```{r}
+#| fig-width: 7
+#| fig-height: 3
+
+z32 <- qnorm(0.05)
+cat("z0 =", round(z32, 4), "\n")
+graficar_normal(z32, 3.8, "3.2 P(Z > z₀) = 0.95 → z₀ = -1.645",
+                "Área acumulada derecha del 95 %", c(round(z32, 3)), color_area = "#2196F3")
+```
+
+**3.3** $P(Z > z_0) = 0,90$
+
+- **Solución:** $F(z_0) = 1 - 0,90 = 0,10$, así que $z_0$ es negativo. Buscando $0,90$ en la tabla ($F(1,28) = 0,8997$), se obtiene $z_0 = -1,28$.
+- **Gráfica:** marca $z_0$ a la izquierda del $0$ y sombrea desde $z_0$ hasta $+\infty$ (área $0,90$).
+- **GeoGebra:** `InversaNormal(0, 1, 0.10)` da `-1.2816`.
+
+```{r}
+#| fig-width: 7
+#| fig-height: 3
+
+z33 <- qnorm(0.10)
+cat("z0 =", round(z33, 4), "\n")
+graficar_normal(z33, 3.8, "3.3 P(Z > z₀) = 0.90 → z₀ = -1.28",
+                "Área acumulada derecha del 90 %", c(round(z33, 2)), color_area = "#FF9800")
+```
+
+**PARTE 4: HALLAR** $z_1$ Y $z_2$
+
+Se toma el intervalo simétrico alrededor de $0$, así que $z_1 = -z_2$ y cada cola vale $\frac{1 - \text{área}}{2}$.
+
+*4.1* $P(z_1 \le Z \le z_2) = 0,95$
+
+- **Solución:** cada cola vale $\frac{1 - 0,95}{2} = 0,025$, así que $F(z_2) = 0,95 + 0,025 = 0,9750 \implies z_2 = 1,96$ y $z_1 = -1,96$.
+- **Gráfica:** marca $-1,96$ y $1,96$ y sombrea el centro ($0,95$), dejando dos colas sin sombrear de $0,025$ cada una.
+- **GeoGebra:** `InversaNormal(0, 1, 0.975)` da `1.96` \| Área: `Integral(f, -1.96, 1.96)`.
+
+```{r}
+#| fig-width: 7
+#| fig-height: 3
+
+z41 <- qnorm(0.975)
+cat("z1 =", round(-z41, 2), "| z2 =", round(z41, 2), "\n")
+graficar_normal(-z41, z41, "4.1 P(-1.96 ≤ Z ≤ 1.96) = 0.95",
+                "Área central del 95 % (colas de 0.025 cada una)", c(-1.96, 1.96), color_area = "#9C27B0")
+```
+
+**4.2** $P(z_1 \le Z \le z_2) = 0,90$
+
+- **Solución:** cada cola vale $\frac{1 - 0,90}{2} = 0,05$, así que $F(z_2) = 0,90 + 0,05 = 0,9500 \implies z_2 = 1,645$ y $z_1 = -1,645$.
+- **Gráfica:** marca $-1,645$ y $1,645$ y sombrea el centro ($0,90$), dejando dos colas sin sombrear de $0,05$ cada una.
+- **GeoGebra:** `InversaNormal(0, 1, 0.95)` da `1.6449` \| Área: `Integral(f, -1.645, 1.645)`.
+
+```{r}
+#| fig-width: 7
+#| fig-height: 3
+
+z42 <- qnorm(0.95)
+cat("z1 =", round(-z42, 3), "| z2 =", round(z42, 3), "\n")
+graficar_normal(-z42, z42, "4.2 P(-1.645 ≤ Z ≤ 1.645) = 0.90",
+                "Área central del 90 % (colas de 0.05 cada una)", c(-1.645, 1.645), color_area = "#4CAF50")
+```
+
+**PAQUETES**
+
+```{r}
+#| warning: false
+#| message: false
+
+if (!require(tidyverse)) install.packages("tidyverse")
+library(tidyverse)
+
+if (!require(kableExtra)) install.packages("kableExtra")
+library(kableExtra)
+```
+
+#VARIANCIA POBLACIONAL CONOCIDA - ACTIVIDAD 2
+
+**Ejercicio 1: Evaluación del nuevo sistema de gestión documental**
+
+**Contexto:** Administración pública – evaluación del nuevo sistema de gestión documental\[cite: 2\]. Una entidad territorial desea evaluar si el nuevo sistema de gestión documental ha reducido el tiempo promedio de respuesta a las solicitudes ciudadanas\[cite: 2\]. Se conoce la desviación estándar poblacional y se solicita construir un intervalo de confianza con base en una muestra aleatoria\[cite: 2\].
+
+*1. Identificación de los datos*
+
+| Parámetro | Valor |
+|:---|:---|
+| Tamaño de muestra ($n$) | 64 solicitudes\[cite: 2\] |
+| Media muestral ($\bar{x}$) | 13,8 días\[cite: 2\] |
+| Media de referencia ($\mu_0$) | 15 días\[cite: 2\] |
+| Desviación estándar poblacional ($\sigma$) | 4 días\[cite: 2\] |
+| Varianza poblacional ($\sigma^2$) | $16\text{ días}^2$\[cite: 2\] |
+| Nivel de significancia ($\alpha$) | 0,05\[cite: 2\] |
+| Nivel de confianza ($1 - \alpha$) | 95 %\[cite: 2\] |
+| Distribución utilizada | Normal estándar ($Z$)\[cite: 2\] |
+
+*2. Determinación del nivel de confianza y valor crítico* $Z$
+
+$$\text{NC} = 1 - \alpha = 1 - 0,05 = 0,95 \quad (95\%)$$
+
+Al tratarse de un intervalo bilateral, el nivel de significancia se distribuye en partes iguales entre las dos colas\[cite: 2\]:
+
+$$\frac{\alpha}{2} = \frac{0,05}{2} = 0,025$$
+
+Para un nivel de confianza del 95 %, el valor crítico de la distribución normal estándar es\[cite: 2\]:
+
+$$Z_{1-\alpha/2} = Z_{0,975} = 1,96$$
+
+*3. Gráfica de la distribución normal estándar*
+
+```{r}
+#| fig-width: 8
+#| fig-height: 3.5
+
+z_crit_1 <- qnorm(0.975)
+x_z <- seq(-3.7, 3.7, length.out = 500)
+
+ggplot(data.frame(x = x_z), aes(x = x)) +
+  geom_area(
+    stat = "function", fun = dnorm,
+    xlim = c(-z_crit_1, z_crit_1), fill = "#A8E09E", alpha = 0.85
+  ) +
+  stat_function(fun = dnorm, color = "#1B4332", linewidth = 1.2) +
+  geom_vline(xintercept = c(-z_crit_1, z_crit_1), linetype = "dashed", color = "#333333", linewidth = 0.8) +
+  annotate("text", x = 0, y = 0.17, label = "95 %", size = 5.5, fontface = "bold") +
+  annotate("text", x = -z_crit_1, y = -0.025, label = "-1,96", size = 4) +
+  annotate("text", x = z_crit_1, y = -0.025, label = "1,96", size = 4) +
+  coord_cartesian(ylim = c(-0.03, 0.43), clip = "off") +
+  labs(
+    title = "Distribución normal estándar: área central del 95 %",
+    x = "Valores Z",
+    y = "Densidad"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line.x = element_line(color = "black", linewidth = 0.8)
+  )
+```
+
+La región sombreada representa el 95 % central de la distribución normal estándar, comprendido entre $-1,96$ y $1,96$\[cite: 2\].
+
+*4. Fórmula, cálculos e interpretación*
+
+$$\text{IC} = \bar{x} \pm Z_{1-\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}$$
+
+- **Error estándar:** $\frac{\sigma}{\sqrt{n}} = \frac{4}{\sqrt{64}} = \frac{4}{8} = 0,50\text{ días}$\[cite: 2\]
+- **Margen de error:** $E = 1,96 \times 0,50 = 0,98\text{ días}$\[cite: 2\]
+- **Límite inferior (**$\text{LI}$): $13,8 - 0,98 = 12,82\text{ días}$\[cite: 2\]
+- **Límite superior (**$\text{LS}$): $13,8 + 0,98 = 14,78\text{ días}$\[cite: 2\]
+
+|    Límite inferior    |    Media muestral     |    Límite superior    |
+|:---------------------:|:---------------------:|:---------------------:|
+| 12,82 días\[cite: 2\] | 13,80 días\[cite: 2\] | 14,78 días\[cite: 2\] |
+
+$$\text{IC}_{95\%} = (12,82\;;\;14,78)\text{ días}$$
+
+**Interpretación y conclusión:** Con un nivel de confianza del 95 %, se estima que el tiempo promedio poblacional de respuesta a las solicitudes ciudadanas después de implementar el nuevo sistema se encuentra entre 12,82 y 14,78 días\[cite: 2\]. Como todo el intervalo está por debajo de los 15 días de referencia, hay evidencia estadística favorable para concluir que el tiempo promedio de respuesta se redujo\[cite: 2\].
+
+**5. Código en R**
+
+```{r}
+n <- 64
+media <- 13.8
+sigma <- 4
+alpha <- 0.05
+mu0 <- 15
+
+z_critico <- qnorm(1 - alpha / 2)
+error_estandar <- sigma / sqrt(n)
+E <- z_critico * error_estandar
+LI <- media - E
+LS <- media + E
+
+cat("Nivel de confianza:", (1 - alpha) * 100, "%\n")
+cat("Valor crítico Z:", round(z_critico, 4), "\n")
+cat("Error estándar:", round(error_estandar, 4), "\n")
+cat("Margen de error:", round(E, 4), "\n")
+cat("Límite inferior:", round(LI, 2), "\n")
+cat("Límite superior:", round(LS, 2), "\n")
+if (LS < mu0) cat("El intervalo completo está por debajo de 15 días.\n")
+```
+
+**6. Resumen de resultados**
+
+| Concepto | Resultado |
+|:-----------------------------------|:-----------------------------------|
+| Media muestral | 13,8 días\[cite: 2\] |
+| Valor crítico $Z$ | 1,96\[cite: 2\] |
+| Error estándar | 0,50 días\[cite: 2\] |
+| Margen de error | 0,98 días\[cite: 2\] |
+| IC del 95 % | (12,82 ; 14,78) días\[cite: 2\] |
+| Comparación con $\mu_0 = 15$ | Todo el intervalo es menor que 15\[cite: 2\] |
+| Conclusión | El nuevo sistema redujo el tiempo promedio de respuesta\[cite: 2\] |
+
+------------------------------------------------------------------------
+
+**Ejercicio 2: Programa de mantenimiento preventivo de parques**
+
+**Contexto:** Administración pública – evaluación del programa de mantenimiento preventivo de parques\[cite: 2\]. Una alcaldía municipal implementó un programa de mantenimiento preventivo de parques con el propósito de reducir el gasto mensual promedio de mantenimiento\[cite: 2\]. Se conoce la desviación estándar poblacional y se solicita construir un intervalo de confianza con base en una muestra aleatoria\[cite: 2\].
+
+*1. Identificación de los datos*
+
+| Parámetro | Valor |
+|:-----------------------------------|:-----------------------------------|
+| Tamaño de muestra ($n$) | 36 meses de registros\[cite: 2\] |
+| Media muestral ($\bar{x}$) | $16,8 millones[cite: 2] |
+                                     | Media de referencia ($\mu\_0\$) |
+| Nivel de significancia ($\alpha$) | 0,05\[cite: 2\] |
+| Nivel de confianza ($1 - \alpha$) | 95 %\[cite: 2\] |
+| Distribución utilizada | Normal estándar ($Z$)\[cite: 2\] |
+
+*2. Determinación del nivel de confianza y valor crítico* $Z$
+
+$$\text{NC} = 1 - \alpha = 1 - 0,05 = 0,95 \quad (95\%), \qquad \frac{\alpha}{2} = 0,025, \qquad Z_{0,975} = 1,96$$
+
+*3. Gráfica de la distribución normal estándar*
+
+```{r}
+#| fig-width: 8
+#| fig-height: 3.5
+
+ggplot(data.frame(x = x_z), aes(x = x)) +
+  geom_area(
+    stat = "function", fun = dnorm,
+    xlim = c(-z_crit_1, z_crit_1), fill = "#A8E09E", alpha = 0.85
+  ) +
+  stat_function(fun = dnorm, color = "#1B4332", linewidth = 1.2) +
+  geom_vline(xintercept = c(-z_crit_1, z_crit_1), linetype = "dashed", color = "#333333", linewidth = 0.8) +
+  annotate("text", x = 0, y = 0.17, label = "95 %", size = 5.5, fontface = "bold") +
+  annotate("text", x = -z_crit_1, y = -0.025, label = "-1,96", size = 4) +
+  annotate("text", x = z_crit_1, y = -0.025, label = "1,96", size = 4) +
+  coord_cartesian(ylim = c(-0.03, 0.43), clip = "off") +
+  labs(
+    title = "Distribución normal estándar: área central del 95 %",
+    x = "Valores Z",
+    y = "Densidad"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line.x = element_line(color = "black", linewidth = 0.8)
+  )
+```
+
+*4. Fórmula, cálculos e interpretación*
+
+$$\text{IC} = \bar{x} \pm Z_{1-\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}$$
+
+- **Error estándar:** $\frac{3}{\sqrt{36}} = \frac{3}{6} = 0,50\text{ millones}$\[cite: 2\]
+- **Margen de error:** $E = 1,96 \times 0,50 = 0,98\text{ millones}$\[cite: 2\]
+- **Límite inferior (**$\text{LI}$): $16,8 - 0,98 = 15,82\text{ millones}$\[cite: 2\]
+- **Límite superior (**$\text{LS}$): $16,8 + 0,98 = 17,78\text{ millones}$\[cite: 2\]
+
+| Límite inferior | Media muestral | Límite superior |
+|:----------------------:|:----------------------:|:----------------------:|
+| \$15,82 millones\[cite: 2\] | \$16,80 millones\[cite: 2\] | \$17,78 millones\[cite: 2\] |
+
+$$\text{IC}_{95\%} = (15,82\;;\;17,78)\text{ millones de pesos}$$
+
+**Interpretación y conclusión:** Con un nivel de confianza del 95 %, el gasto mensual promedio poblacional de mantenimiento de parques se estima entre \$15,82 y \$17,78 millones\[cite: 2\]. Como todo el intervalo queda por debajo de los \$18 millones de referencia, se concluye que el programa redujo el gasto promedio mensual\[cite: 2\].
+
+**5. Código en R**
+
+```{r}
+n2 <- 36
+media2 <- 16.8
+sigma2 <- 3
+alpha2 <- 0.05
+mu0_2 <- 18
+
+z_critico2 <- qnorm(1 - alpha2 / 2)
+error_estandar2 <- sigma2 / sqrt(n2)
+E2 <- z_critico2 * error_estandar2
+LI2 <- media2 - E2
+LS2 <- media2 + E2
+
+cat("Nivel de confianza:", (1 - alpha2) * 100, "%\n")
+cat("Valor crítico Z:", round(z_critico2, 4), "\n")
+cat("Error estándar:", round(error_estandar2, 4), "\n")
+cat("Margen de error:", round(E2, 4), "\n")
+cat("Límite inferior:", round(LI2, 2), "\n")
+cat("Límite superior:", round(LS2, 2), "\n")
+if (LS2 < mu0_2) cat("El intervalo completo está por debajo de 18 millones.\n")
+```
+
+*6. Resumen de resultados*
+
+| Concepto | Resultado |
+|:-----------------------------------|:-----------------------------------|
+| Media muestral | \$16,8 millones\[cite: 2\] |
+| Valor crítico $Z$ | 1,96\[cite: 2\] |
+| Error estándar | 0,50 millones\[cite: 2\] |
+| Margen de error | 0,98 millones\[cite: 2\] |
+| IC del 95 % | (15,82 ; 17,78) millones\[cite: 2\] |
+| Comparación con $\mu_0 = 18$ | Todo el intervalo es menor que 18\[cite: 2\] |
+| Conclusión | El programa redujo el gasto promedio mensual\[cite: 2\] |
+
+------------------------------------------------------------------------
+
+# VARIANZA POBLACIONAL DESCONOCIDA
+
+*Ejercicio 1: Programa de capacitación para funcionarios de atención al ciudadano*
+
+**Contexto:** Administración pública – evaluación del programa de capacitación para funcionarios de atención al ciudadano\[cite: 2\]. Antes del programa, el promedio de referencia era de 32 trámites atendidos correctamente por funcionario durante una jornada\[cite: 2\]. La varianza poblacional es desconocida\[cite: 2\].
+
+*1. Identificación de los datos*
+
+| Parámetro | Valor |
+|:-----------------------------------|:-----------------------------------|
+| Tamaño de muestra ($n$) | 12 funcionarios\[cite: 2\] |
+| Datos observados | 34, 36, 31, 35, 33, 38, 30, 37, 34, 35, 32, 36\[cite: 2\] |
+| Media de referencia ($\mu_0$) | 32 trámites\[cite: 2\] |
+| Varianza poblacional ($\sigma^2$) | Desconocida\[cite: 2\] |
+| Nivel de significancia ($\alpha$) | 0,01\[cite: 2\] |
+| Nivel de confianza ($1 - \alpha$) | 99 %\[cite: 2\] |
+| Grados de libertad ($\text{gl} = n - 1$) | $12 - 1 = 11$\[cite: 2\] |
+| Distribución utilizada | $t$ de Student\[cite: 2\] |
+
+*2. Cálculo de estadísticos muestrales*
+
+$$\bar{x} = \frac{\sum x_i}{n} = \frac{411}{12} = 34,2500\text{ trámites}$$
+
+$$s^2 = \frac{\sum (x_i - \bar{x})^2}{n - 1} = \frac{64,2500}{11} = 5,8409\text{ trámites}^2, \qquad s = \sqrt{5,8409} = 2,4168\text{ trámites}$$
+
+*3. Valor crítico* $t$ y gráfica
+
+Con $\text{gl} = 11$ y nivel de confianza del 99 %, el valor crítico es $t_{0,995;\,11} = 3,1058$\[cite: 2\].
+
+```{r}
+#| fig-width: 8
+#| fig-height: 3.5
+
+t_crit_1 <- qt(0.995, df = 11)
+x_t1 <- seq(-4.2, 4.2, length.out = 500)
+
+ggplot(data.frame(x = x_t1), aes(x = x)) +
+  geom_area(
+    stat = "function", fun = dt, args = list(df = 11),
+    xlim = c(-t_crit_1, t_crit_1), fill = "#A8E09E", alpha = 0.85
+  ) +
+  stat_function(fun = dt, args = list(df = 11), color = "#1D3557", linewidth = 1.2) +
+  geom_vline(xintercept = c(-t_crit_1, t_crit_1), linetype = "dashed", color = "#333333", linewidth = 0.8) +
+  annotate("text", x = 0, y = 0.18, label = "99 %", size = 5.5, fontface = "bold") +
+  annotate("text", x = -t_crit_1, y = -0.03, label = "-3,1058", size = 4) +
+  annotate("text", x = t_crit_1, y = -0.03, label = "3,1058", size = 4) +
+  coord_cartesian(ylim = c(-0.04, 0.42), clip = "off") +
+  labs(
+    title = "Distribución t de Student (gl = 11): área central del 99 %",
+    x = "Valores t",
+    y = "Densidad"
+  ) +
+  theme_classic()
+```
+
+*4. Intervalo de confianza, interpretación y código en R*
+
+$$\text{IC} = \bar{x} \pm t_{1-\alpha/2;\,n-1} \cdot \frac{s}{\sqrt{n}}$$
+
+- **Error estándar:** $\frac{2,4168}{\sqrt{12}} = 0,6977\text{ trámites}$\[cite: 2\]
+- **Margen de error:** $E = 3,1058 \times 0,6977 = 2,1668\text{ trámites}$\[cite: 2\]
+- **Intervalo de confianza:** $\text{IC}_{99\%} = (32,08\;;\;36,42)\text{ trámites}$\[cite: 2\]
+
+**Interpretación y conclusión:** Con un 99 % de confianza, se estima que el promedio poblacional de trámites atendidos correctamente por jornada está entre 32,08 y 36,42 trámites\[cite: 2\]. Como todo el intervalo supera los 32 trámites de referencia, hay evidencia de mejora tras la capacitación\[cite: 2\].
+
+```{r}
+datos_t1 <- c(34, 36, 31, 35, 33, 38, 30, 37, 34, 35, 32, 36)
+alpha_t1 <- 0.01
+mu0_t1 <- 32
+
+n_t1 <- length(datos_t1)
+media_t1 <- mean(datos_t1)
+s_t1 <- sd(datos_t1)
+gl_t1 <- n_t1 - 1
+t_critico_t1 <- qt(1 - alpha_t1 / 2, df = gl_t1)
+ee_t1 <- s_t1 / sqrt(n_t1)
+E_t1 <- t_critico_t1 * ee_t1
+LI_t1 <- media_t1 - E_t1
+LS_t1 <- media_t1 + E_t1
+
+cat("Media muestral:", round(media_t1, 4), "\n")
+cat("Desviación estándar:", round(s_t1, 4), "\n")
+cat("Valor crítico t:", round(t_critico_t1, 4), "\n")
+cat("Error estándar:", round(ee_t1, 4), "\n")
+cat("Margen de error:", round(E_t1, 4), "\n")
+cat("IC 99%:", round(LI_t1, 2), ";", round(LS_t1, 2), "\n")
+t.test(datos_t1, conf.level = 1 - alpha_t1)$conf.int
+```
+
+*5. Resumen de resultados*
+
+| Concepto | Resultado |
+|:-----------------------------------|:-----------------------------------|
+| Media muestral | 34,25 trámites\[cite: 2\] |
+| Desviación estándar muestral ($s$) | 2,4168 trámites\[cite: 2\] |
+| Valor crítico $t$ ($\text{gl} = 11$) | 3,1058\[cite: 2\] |
+| Error estándar | 0,6977 trámites\[cite: 2\] |
+| Margen de error | 2,1668 trámites\[cite: 2\] |
+| IC del 99 % | (32,08 ; 36,42) trámites\[cite: 2\] |
+| Comparación con $\mu_0 = 32$ | Todo el intervalo es mayor que 32\[cite: 2\] |
+| Conclusión | La capacitación aumentó el promedio de trámites\[cite: 2\] |
+
+------------------------------------------------------------------------
+
+*Ejercicio 2: Verificación del tiempo promedio de respuesta a solicitudes ciudadanas*
+
+**Contexto:** Administración pública – verificación del tiempo promedio de respuesta a solicitudes ciudadanas\[cite: 2\]. Una entidad territorial afirma que el tiempo promedio de respuesta es de 15 días calendario, con varianza poblacional desconocida\[cite: 2\].
+
+*1. Identificación de los datos*
+
+| Parámetro | Valor |
+|:-----------------------------------|:-----------------------------------|
+| Tamaño de muestra ($n$) | 14 solicitudes\[cite: 2\] |
+| Datos observados | 14, 17, 13, 16, 15, 19, 12, 18, 14, 16, 13, 17, 15, 20\[cite: 2\] |
+| Media de referencia ($\mu_0$) | 15 días\[cite: 2\] |
+| Varianza poblacional ($\sigma^2$) | Desconocida\[cite: 2\] |
+| Nivel de significancia ($\alpha$) | 0,01\[cite: 2\] |
+| Nivel de confianza ($1 - \alpha$) | 99 %\[cite: 2\] |
+| Grados de libertad ($\text{gl} = n - 1$) | $14 - 1 = 13$\[cite: 2\] |
+| Distribución utilizada | $t$ de Student\[cite: 2\] |
+
+*2. Cálculo de estadísticos muestrales*
+
+$$\bar{x} = \frac{\sum x_i}{n} = \frac{219}{14} = 15,6429\text{ días}$$
+
+$$s^2 = \frac{\sum (x_i - \bar{x})^2}{n - 1} = \frac{73,2143}{13} = 5,6319\text{ días}^2, \qquad s = \sqrt{5,6319} = 2,3732\text{ días}$$
+
+*3. Valor crítico* $t$ y gráfica
+
+Con $\text{gl} = 13$ y nivel de confianza del 99 %, el valor crítico es $t_{0,995;\,13} = 3,0123$\[cite: 2\].
+
+```{r}
+#| fig-width: 8
+#| fig-height: 3.5
+
+t_crit_2 <- qt(0.995, df = 13)
+x_t2 <- seq(-4.2, 4.2, length.out = 500)
+
+ggplot(data.frame(x = x_t2), aes(x = x)) +
+  geom_area(
+    stat = "function", fun = dt, args = list(df = 13),
+    xlim = c(-t_crit_2, t_crit_2), fill = "#A8E09E", alpha = 0.85
+  ) +
+  stat_function(fun = dt, args = list(df = 13), color = "#1D3557", linewidth = 1.2) +
+  geom_vline(xintercept = c(-t_crit_2, t_crit_2), linetype = "dashed", color = "#333333", linewidth = 0.8) +
+  annotate("text", x = 0, y = 0.18, label = "99 %", size = 5.5, fontface = "bold") +
+  annotate("text", x = -t_crit_2, y = -0.03, label = "-3,0123", size = 4) +
+  annotate("text", x = t_crit_2, y = -0.03, label = "3,0123", size = 4) +
+  coord_cartesian(ylim = c(-0.04, 0.42), clip = "off") +
+  labs(
+    title = "Distribución t de Student (gl = 13): área central del 99 %",
+    x = "Valores t",
+    y = "Densidad"
+  ) +
+  theme_classic()
+```
+
+*4. Intervalo de confianza, interpretación y código en R*
+
+$$\text{IC} = \bar{x} \pm t_{1-\alpha/2;\,n-1} \cdot \frac{s}{\sqrt{n}}$$
+
+- **Error estándar:** $\frac{2,3732}{\sqrt{14}} = 0,6343\text{ días}$\[cite: 2\]
+- **Margen de error:** $E = 3,0123 \times 0,6343 = 1,9105\text{ días}$\[cite: 2\]
+- **Intervalo de confianza:** $\text{IC}_{99\%} = (13,73\;;\;17,55)\text{ días calendario}$\[cite: 2\]
+
+**Interpretación y conclusión:** Con un 99 % de confianza, se estima que el tiempo promedio poblacional de respuesta está entre 13,73 y 17,55 días calendario\[cite: 2\]. Como el valor de 15 días queda dentro del intervalo, no hay evidencia suficiente para rechazar la afirmación de la entidad al nivel del 1 %\[cite: 2\].
+
+```{r}
+datos_t2 <- c(14, 17, 13, 16, 15, 19, 12, 18, 14, 16, 13, 17, 15, 20)
+alpha_t2 <- 0.01
+mu0_t2 <- 15
+
+n_t2 <- length(datos_t2)
+media_t2 <- mean(datos_t2)
+s_t2 <- sd(datos_t2)
+gl_t2 <- n_t2 - 1
+t_critico_t2 <- qt(1 - alpha_t2 / 2, df = gl_t2)
+ee_t2 <- s_t2 / sqrt(n_t2)
+E_t2 <- t_critico_t2 * ee_t2
+LI_t2 <- media_t2 - E_t2
+LS_t2 <- media_t2 + E_t2
+
+cat("Media muestral:", round(media_t2, 4), "\n")
+cat("Desviación estándar:", round(s_t2, 4), "\n")
+cat("Valor crítico t:", round(t_critico_t2, 4), "\n")
+cat("Error estándar:", round(ee_t2, 4), "\n")
+cat("Margen de error:", round(E_t2, 4), "\n")
+cat("IC 99%:", round(LI_t2, 2), ";", round(LS_t2, 2), "\n")
+t.test(datos_t2, conf.level = 1 - alpha_t2)$conf.int
+```
+
+*5. Resumen de resultados*
+
+| Concepto | Resultado |
+|:-----------------------------------|:-----------------------------------|
+| Media muestral | 15,64 días\[cite: 2\] |
+| Desviación estándar muestral ($s$) | 2,3732 días\[cite: 2\] |
+| Valor crítico $t$ ($\text{gl} = 13$) | 3,0123\[cite: 2\] |
+| Error estándar | 0,6343 días\[cite: 2\] |
+| Margen de error | 1,9105 días\[cite: 2\] |
+| IC del 99 % | (13,73 ; 17,55) días calendario\[cite: 2\] |
+| Comparación con $\mu_0 = 15$ | El valor 15 está dentro del intervalo\[cite: 2\] |
+| Conclusión | La afirmación de 15 días no se rechaza\[cite: 2\] |
+
+
+
+*CONSIDERACIONES GENERALES*
+
+**Propósito:** Desarrollar e interpretar cuatro procedimientos de estimación por intervalos en situaciones de la administración pública: dos para proporciones y dos para varianzas.
+
+- Se utiliza un nivel de confianza del $95\%$, por lo que $\alpha = 0,05$ y, para los intervalos de proporción, $Z_{(0,975)} = 1,96$.
+- Para las proporciones se aplica el intervalo normal aproximado (Wald).
+- Para las varianzas se utiliza la distribución ji-cuadrado ($\chi^2$), con $n - 1$ grados de libertad. Este procedimiento supone una población normal.
+
+```{r}
+#| warning: false
+#| message: false
+
+if (!require(tidyverse)) install.packages("tidyverse")
+library(tidyverse)
+```
+
+# INTERVALOS DE CONFIANZA PARA UNA PROPORCIÓN
+
+*Ejercicio 1. Proporción de trámites resueltos oportunamente*
+
+En una muestra aleatoria de $200$ solicitudes de certificados de residencia, $164$ fueron resueltas dentro del plazo establecido. Estime la proporción poblacional de solicitudes resueltas oportunamente mediante un intervalo de confianza del $95\%$.
+
+- **Datos:** $n = 200$; $x = 164$; confianza $= 95\%$; $Z = 1,96$.
+- **Proporción muestral:** $\hat{p} = \frac{x}{n} = \frac{164}{200} = 0,82$.
+- **Error estándar:** $\sqrt{\frac{\hat{p}(1-\hat{p})}{n}} = \sqrt{\frac{0,82 \times 0,18}{200}} = 0,02717$.
+- **Margen de error:** $E = 1,96 \times 0,02717 = 0,05325$.
+- **Límite inferior:** $0,82 - 0,05325 = 0,76675$.
+- **Límite superior:** $0,82 + 0,05325 = 0,87325$.
+- **Resultado:** $\text{IC}_{95\%} = [0,7668;\; 0,8732]$, equivalente aproximadamente a $[76,68\%;\; 87,32\%]$.
+
+**Interpretación:** Con un nivel de confianza del $95\%$, la proporción poblacional de solicitudes resueltas oportunamente se estima entre $76,68\%$ y $87,32\%$. Esto permite valorar el cumplimiento de los tiempos de respuesta de la Alcaldía.
+
+**Verificación:** $n\hat{p} = 164$ y $n(1-\hat{p}) = 36$; ambos son mayores que $5$, por lo que se cumple la condición usual para la aproximación normal.
+
+```{r}
+#| fig-width: 8
+#| fig-height: 3.5
+
+n1 <- 200; x1 <- 164
+p1 <- x1 / n1
+ee1 <- sqrt(p1 * (1 - p1) / n1)
+z_crit <- qnorm(0.975)
+li1 <- p1 - z_crit * ee1
+ls1 <- p1 + z_crit * ee1
+
+x_grid1 <- seq(p1 - 4 * ee1, p1 + 4 * ee1, length.out = 500)
+ggplot(data.frame(x = x_grid1), aes(x = x)) +
+  geom_area(stat = "function", fun = dnorm, args = list(mean = p1, sd = ee1),
+            xlim = c(li1, ls1), fill = "#9C27B0", alpha = 0.35) +
+  stat_function(fun = dnorm, args = list(mean = p1, sd = ee1), color = "#4A148C", linewidth = 1.1) +
+  geom_vline(xintercept = c(li1, p1, ls1), linetype = c("dashed", "solid", "dashed"),
+             color = c("#333333", "#D32F2F", "#333333")) +
+  annotate("text", x = p1, y = dnorm(p1, p1, ee1) * 0.45,
+           label = "IC 95%\n[0,7668 ; 0,8732]", fontface = "bold", size = 4) +
+  labs(title = "Distribución aproximada de la proporción muestral (Ejercicio 1)",
+       subtitle = "Proporción de trámites resueltos oportunamente (p̂ = 0,82)",
+       x = "Proporción (p)", y = "Densidad") +
+  theme_minimal()
+```
+
+*Ejercicio 2. Proporción de beneficiarios satisfechos con un programa social*
+
+En una muestra aleatoria de $250$ beneficiarios de un programa de apoyo alimentario, $190$ calificaron el servicio como satisfactorio o muy satisfactorio. Estime la proporción poblacional de beneficiarios satisfechos con un intervalo de confianza del $95\%$.
+
+- **Datos:** $n = 250$; $x = 190$; confianza $= 95\%$; $Z = 1,96$.
+- **Proporción muestral:** $\hat{p} = \frac{190}{250} = 0,76$.
+- **Error estándar:** $\sqrt{\frac{0,76 \times 0,24}{250}} = 0,02701$ *(en el cálculo manual redondeado a* $0,02751$ da $E = 0,05294$).
+- **Límite inferior:** $0,76 - 0,05294 = 0,70706$.
+- **Límite superior:** $0,76 + 0,05294 = 0,81294$.
+- **Resultado:** $\text{IC}_{95\%} = [0,7071;\; 0,8129]$, equivalente aproximadamente a $[70,71\%;\; 81,29\%]$.
+
+**Interpretación:** Con un nivel de confianza del $95\%$, se estima que entre $70,71\%$ y $81,29\%$ de todos los beneficiarios están satisfechos con el programa. La Secretaría puede usar esta estimación como insumo para evaluar la calidad percibida del servicio.
+
+**Verificación:** $n\hat{p} = 190$ y $n(1-\hat{p}) = 60$; se satisfacen las condiciones usuales de la aproximación normal.
+
+```{r}
+#| fig-width: 8
+#| fig-height: 3.5
+
+n2 <- 250; x2 <- 190
+p2 <- x2 / n2
+ee2 <- sqrt(p2 * (1 - p2) / n2)
+li2 <- p2 - z_crit * ee2
+ls2 <- p2 + z_crit * ee2
+
+x_grid2 <- seq(p2 - 4 * ee2, p2 + 4 * ee2, length.out = 500)
+ggplot(data.frame(x = x_grid2), aes(x = x)) +
+  geom_area(stat = "function", fun = dnorm, args = list(mean = p2, sd = ee2),
+            xlim = c(li2, ls2), fill = "#2196F3", alpha = 0.35) +
+  stat_function(fun = dnorm, args = list(mean = p2, sd = ee2), color = "#0D47A1", linewidth = 1.1) +
+  geom_vline(xintercept = c(li2, p2, ls2), linetype = c("dashed", "solid", "dashed"),
+             color = c("#333333", "#D32F2F", "#333333")) +
+  annotate("text", x = p2, y = dnorm(p2, p2, ee2) * 0.45,
+           label = "IC 95%\n[0,7071 ; 0,8129]", fontface = "bold", size = 4) +
+  labs(title = "Distribución aproximada de la proporción muestral (Ejercicio 2)",
+       subtitle = "Proporción de beneficiarios satisfechos (p̂ = 0,76)",
+       x = "Proporción (p)", y = "Densidad") +
+  theme_minimal()
+```
+
+# INTERVALOS DE CONFIANZA PARA LA VARIANZA POBLACIONAL
+
+*Ejercicio 3. Varianza del tiempo de contratación de mínima cuantía*
+
+Una oficina de contratación estudia el número de días entre la publicación de una invitación y la adjudicación de contratos. La muestra de $15$ procesos fue: `18, 22, 20, 17, 24, 19, 21, 23, 16, 20, 18, 25, 19, 21, 22`. Construya un intervalo de confianza del $95\%$ para la varianza poblacional.
+
+- **Datos:** $n = 15$; grados de libertad $gl = n - 1 = 14$; $\alpha = 0,05$.
+- **Media muestral:** $\bar{x} = \frac{305}{15} = 20,333\text{ días}$.
+- **Varianza muestral:** $s^2 = \frac{\sum(x_i - \bar{x})^2}{n - 1} = 6,667\text{ días}^2$.
+- **Cuantiles ji-cuadrado:** $\chi^2_{(0,025;\, 14)} = 5,629$ y $\chi^2_{(0,975;\, 14)} = 26,119$.
+- **Límite inferior:** $\text{LI} = \frac{(n - 1)s^2}{\chi^2_{(0,975;\, 14)}} = \frac{14 \times 6,667}{26,119} = 3,573\text{ días}^2$.
+- **Límite superior:** $\text{LS} = \frac{(n - 1)s^2}{\chi^2_{(0,025;\, 14)}} = \frac{14 \times 6,667}{5,629} = 16,582\text{ días}^2$.
+- **Resultado:** $\text{IC}_{95\%}\text{ para }\sigma^2 = [3,57;\; 16,58]\text{ días}^2$.
+
+**Interpretación:** Bajo el supuesto de normalidad de la población, el intervalo estima que la varianza poblacional de los tiempos de contratación se encuentra entre $3,57$ y $16,58\text{ días}^2$. La varianza cuantifica la dispersión de los tiempos alrededor de su media.
+
+**Supuesto:** La inferencia ji-cuadrado para la varianza requiere que la variable en la población tenga distribución normal; la selección de procesos también debe ser aleatoria e independiente.
+
+```{r}
+#| fig-width: 8
+#| fig-height: 3.5
+
+gl3 <- 14
+chi_inf3 <- qchisq(0.025, df = gl3)
+chi_sup3 <- qchisq(0.975, df = gl3)
+x_chi3 <- seq(0, 38, length.out = 500)
+
+ggplot(data.frame(x = x_chi3), aes(x = x)) +
+  geom_area(stat = "function", fun = dchisq, args = list(df = gl3),
+            xlim = c(chi_inf3, chi_sup3), fill = "#4CAF50", alpha = 0.4) +
+  stat_function(fun = dchisq, args = list(df = gl3), color = "#1B5E20", linewidth = 1.1) +
+  geom_vline(xintercept = c(chi_inf3, chi_sup3), linetype = "dashed", color = "#333333") +
+  annotate("text", x = 14, y = 0.04, label = "95 % central\n[5,629 ; 26,119]", fontface = "bold") +
+  labs(title = "Distribución Ji-Cuadrado con gl = 14 (Ejercicio 3)",
+       subtitle = "Cuantiles críticos para el intervalo de confianza de la varianza",
+       x = "Valores Chi-cuadrado", y = "Densidad") +
+  theme_minimal()
+```
+
+*Ejercicio 4. Varianza del consumo mensual de agua en edificios públicos*
+
+La dependencia de servicios generales estudia el consumo mensual de agua de $16$ edificios administrativos. Los consumos observados, en $\text{m}^3$, son: `32, 35, 31, 38, 34, 36, 33, 40, 37, 34, 30, 39, 35, 36, 32, 38`. Construya un intervalo de confianza del $95\%$ para la varianza poblacional.
+
+- **Datos:** $n = 16$; grados de libertad $gl = 15$; $\alpha = 0,05$.
+- **Media muestral:** $\bar{x} = \frac{560}{16} = 35\text{ m}^3$.
+- **Varianza muestral:** $s^2 = \frac{\sum(x_i - \bar{x})^2}{n - 1} = 8,667\text{ (m}^3)^2$.
+- **Cuantiles ji-cuadrado:** $\chi^2_{(0,025;\, 15)} = 6,262$ y $\chi^2_{(0,975;\, 15)} = 27,488$.
+- **Límite inferior:** $\text{LI} = \frac{15 \times 8,667}{27,488} = 4,729\text{ (m}^3)^2$.
+- **Límite superior:** $\text{LS} = \frac{15 \times 8,667}{6,262} = 20,759\text{ (m}^3)^2$.
+- **Resultado:** $\text{IC}_{95\%}\text{ para }\sigma^2 = [4,73;\; 20,76]\text{ (m}^3)^2$.
+
+**Interpretación:** Suponiendo normalidad poblacional, la varianza del consumo mensual de agua de los edificios se estima entre $4,73$ y $20,76\text{ (m}^3)^2$. Esta información puede apoyar la identificación de edificios con consumos atípicos y la planeación del uso eficiente de los recursos.
+
+**Supuesto:** El intervalo ji-cuadrado exige normalidad de la variable en la población y una muestra aleatoria de observaciones independientes.
+
+```{r}
+#| fig-width: 8
+#| fig-height: 3.5
+
+gl4 <- 15
+chi_inf4 <- qchisq(0.025, df = gl4)
+chi_sup4 <- qchisq(0.975, df = gl4)
+x_chi4 <- seq(0, 40, length.out = 500)
+
+ggplot(data.frame(x = x_chi4), aes(x = x)) +
+  geom_area(stat = "function", fun = dchisq, args = list(df = gl4),
+            xlim = c(chi_inf4, chi_sup4), fill = "#FF9800", alpha = 0.4) +
+  stat_function(fun = dchisq, args = list(df = gl4), color = "#E65100", linewidth = 1.1) +
+  geom_vline(xintercept = c(chi_inf4, chi_sup4), linetype = "dashed", color = "#333333") +
+  annotate("text", x = 15, y = 0.038, label = "95 % central\n[6,262 ; 27,488]", fontface = "bold") +
+  labs(title = "Distribución Ji-Cuadrado con gl = 15 (Ejercicio 4)",
+       subtitle = "Cuantiles críticos para el intervalo de confianza de la varianza",
+       x = "Valores Chi-cuadrado", y = "Densidad") +
+  theme_minimal()
+```
+
+*RESUMEN Y CÓDIGO R DE VERIFICACIÓN*
+
+| Ejercicio | Estimación puntual | Límite inferior | Límite superior |
+|:-----------------|:----------------:|:----------------:|:----------------:|
+| 1\. Proporción trámites | $0,82$ | $0,7668$ | $0,8732$ |
+| 2\. Proporción satisfacción | $0,76$ | $0,7071$ | $0,8129$ |
+| 3\. Varianza contratación | $6,667\text{ días}^2$ | $3,573$ | $16,582$ |
+| 4\. Varianza consumo agua | $8,667\text{ (m}^3)^2$ | $4,729$ | $20,759$ |
+
+```{r}
+# Ejercicios 1 y 2: intervalos para proporciones
+prop.test(164, 200, conf.level = 0.95, correct = FALSE)
+prop.test(190, 250, conf.level = 0.95, correct = FALSE)
+
+# Ejercicio 3: intervalo para varianza
+x3 <- c(18, 22, 20, 17, 24, 19, 21, 23, 16, 20, 18, 25, 19, 21, 22)
+n3 <- length(x3); gl3 <- n3 - 1; s23 <- var(x3)
+c((gl3 * s23) / qchisq(0.975, gl3),
+  (gl3 * s23) / qchisq(0.025, gl3))
+
+# Ejercicio 4: intervalo para varianza
+x4 <- c(32, 35, 31, 38, 34, 36, 33, 40, 37, 34, 30, 39, 35, 36, 32, 38)
+n4 <- length(x4); gl4 <- n4 - 1; s24 <- var(x4)
+c((gl4 * s24) / qchisq(0.975, gl4),
+  (gl4 * s24) / qchisq(0.025, gl4))
+```
